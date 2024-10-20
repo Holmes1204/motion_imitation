@@ -14,7 +14,7 @@ Project page: https://xbpeng.github.io/projects/Robotic_Imitation/index.html
 ## Getting Started
 
 We use this repository with Python 3.7 or Python 3.8 on Ubuntu, MacOS and Windows.
-
+- Create the python environment `conda create -n pybullet_sim python==3.7`
 - Install MPC extension (Optional) `python3 setup.py install --user`
 
 Install dependencies:
@@ -41,6 +41,8 @@ For parallel training with MPI run:
 ``mpiexec -n 8 python3 motion_imitation/run.py --mode train --motion_file motion_imitation/data/motions/dog_pace.txt --int_save_freq 10000000``
 
 - `-n` is the number of parallel.
+- `--use-hwthread-cpus` use all the cpus
+- `--oversubscribe` ignore the slot limits
 
 ## Testing Imitation Models
 
@@ -75,11 +77,21 @@ python3 -m motion_imitation.examples.test_env_gui --robot_type=A1 --motor_contro
 
 The three commandline flags are:
 
-`robot_type`: choose between `A1` and `Laikago` for different robot.
+- `--robot_type`: choose between `A1` and `Laikago` for different robot.
 
-`motor_control_mode`: choose between `Position` ,`Torque` for different motor control modes.
+- `--motor_control_mode`: choose between `Position` ,`Torque` for different motor control modes.
 
-`on_rack`: whether to fix the robot's base on a rack. Setting `on_rack=True` is handy for debugging visualizing open-loop gaits.
+- `--on_rack`: whether to fix the robot's base on a rack. Setting `on_rack=True` is handy for debugging visualizing open-loop gaits.
+
+You can also use this command to run mpc controller:
+```bash
+python3 -m motion_imitation.examples.whole_body_controller_example --max_time_secs 10  --use_gamepad --show_gui
+```
+The arguments are:
+- `--max_time_secs` the maximum horizon to run the controler
+- `--use_gamepad` use joystick to move the robot
+- `--show_gui` show the GUI of pybullet
+
 
 ## The gym interface
 Additionally, the codebase can be directly installed as a pip package. Just run:
